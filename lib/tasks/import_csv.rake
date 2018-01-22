@@ -38,9 +38,15 @@ end
 
 task :import_csv do
   Rake::Task["create_customers"].invoke
+  puts "added customers to database"
   Rake::Task["create_merchants"].invoke
+  puts "added merchants to database"
   Rake::Task["create_items"].invoke
+  puts "added items to database"
   Rake::Task["create_invoices"].invoke
+  puts "added invoices to database"
   Rake::Task["create_transactions"].invoke
+  puts "added transactions to database"
   Rake::Task["create_invoice_items"].invoke
+  puts "added invoice_items to database"
 end
