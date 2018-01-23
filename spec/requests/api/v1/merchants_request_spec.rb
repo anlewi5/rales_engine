@@ -75,5 +75,16 @@ describe "merchants API" do
       expect(merchant['created_at']).to eq("2018-01-23T20:23:21.571Z")
     end
 
+    it "finds all merchants from a given created at" do 
+      merchant1 = create(:merchant, created_at: "2018-01-23T20:23:21.571Z")
+      merchant2 = create(:merchant, created_at: "2018-01-23T20:23:21.571Z")
+
+      get "/api/v1/merchants/find_all?created_at=2018-01-23T20:23:21.571Z"
+
+      merchant = JSON.parse(response.body)
+      expect(response).to be_successful
+      expect(merchant).to be_an(Array)
+    end
+
   end 
 end
