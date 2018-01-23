@@ -1,24 +1,41 @@
-# README
+# Rails Engine
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+[![CircleCI](https://circleci.com/gh/anlewi5/rales_engine/tree/master.svg?style=shield)](https://circleci.com/gh/anlewi5/rales_engine/tree/master)
 
-Things you may want to cover:
+## About
 
-* Ruby version
+The purpose of this project is to use Rails and ActiveRecord to build a JSON API which exposes the [SalesEngine data schema](https://github.com/turingschool-examples/sales_engine/tree/master/data).
 
-* System dependencies
+## Getting Started
 
-* Configuration
+This project uses the Ruby on Rails framework, which can be installed from [here](http://installrails.com/).
+[Bundler](http://bundler.io/) is used to install the gems needed for this application.
 
-* Database creation
+In order to run this appication in the development environment, perform the following in the CLI:
 
-* Database initialization
+```
+bundle install
+rake db:create db:migrate
+rake import_all
+```
 
-* How to run the test suite
+In order to spin-up the server, run: `rails s`
 
-* Services (job queues, cache servers, search engines, etc.)
+## Testing
 
-* Deployment instructions
+[Rspec-Rails](https://github.com/rspec/rspec-rails) is used for testing.
+[Factory_Bot](https://github.com/thoughtbot/factory_bot) is used to create test data.
 
-* ...
+In order to run tests, perform the following:
+
+`rake db:test:prepare`
+
+`rspec`
+
+## Schema
+![schema](nico, put a schema link in here please)
+
+
+## Contributers
+
+Anna Lewis (@anlewi5) Nico Lewis(@nico24687)
