@@ -25,5 +25,91 @@ describe "items API" do
       expect(item_response['description']).to eq(item.description)
       expect(item_response['unit_price']).to eq(item.unit_price)
     end
+
+    describe "queries" do
+
+      # let!(:merchant) {create(:merchant)}
+      # let!(:item)     {create(:item,
+      #                         name: "Camera",
+      #                         unit_price: 300,
+      #                         merchant: merchant,
+      #                         created_at: "2012-03-27T14:54:05.000Z",
+      #                         updated_at: "2012-03-27T14:54:05.000Z")}
+      # let!(:item2)    {create(:item,
+      #                         name: "Camera",
+      #                         unit_price: 300,
+      #                         merchant: merchant,
+      #                         created_at: "2012-03-27T14:54:05.000Z",
+      #                         updated_at: "2012-03-27T14:54:05.000Z")}
+      # let!(:item3)    {create(:item)}
+
+
+      describe "find?"
+        subject { get "/api/v1/items/find?#{params}" }
+
+        let(:item_response) { JSON.parse(response.body) }
+
+        before(:each) do
+          create(:item, id: 1,
+                        name: "ItemName",
+                        description: "ItemDescription",
+                        unit_price: 100,
+                        merchant_id: 1
+                        created_at: "2012-03-06T16:54:31",
+                        updated_at: "2013-03-06T16:54:31"
+          )
+        end
+
+        shared_examples_for "a response that finds a single item" do
+          #GET /api/v1/merchants/find?parameters
+          it "finds the correct item" do
+            subject
+            expect(response).to be_success
+            expect(item_response["id"]).to eq(1)
+            expect(item_response["name"]).to eq("ItemName")
+            expect(item_response["description"]).to eq("ItemDescription")
+            expect(item_response["unit_price"]).to eq(100)
+            expect(item_response["merchant_id"]).to eq(1)
+            expect(item_response["created_at"]).to eq("2012-03-06T16:54:31")
+            expect(item_response["updated_at"]).to eq("2013-03-06T16:54:31")
+          end
+        end
+
+        context "by id" do
+          let(:params) { "id=1" }
+          it_behaves_like "a response that finds a single item"
+        end
+
+        it "by name" do
+          let(:params) { "name=ItemName" }
+          it_behaves_like "a response that finds a single item"
+        end
+
+        it "by description" do
+          let(:params) { "description=ItemDescription" }
+          it_behaves_like "a response that finds a single item"
+        end
+
+        it "by unit_price" do
+          let(:params) { "unit_price=100" }
+          it_behaves_like "a response that finds a single item"
+        end
+
+        it "by merchant_id" do
+          let(:params) { "merchant_id=1" }
+          it_behaves_like "a response that finds a single item"
+        end
+
+        it "by created_at" do
+          let(:params) { "created_at=2012-03-06T16:54:31" }
+          it_behaves_like "a response that finds a single item"
+        end
+
+        it "by updated_at" do
+          let(:params) { "updated_at=2013-03-06T16:54:31" }
+          it_behaves_like "a response that finds a single item"
+        end
+      end
+    end
   end 
 end
