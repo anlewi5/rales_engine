@@ -53,7 +53,7 @@ describe "merchants API" do
       expect(merchant["name"]).to eq("Nico")
     end
 
-    it "sends all data on a merchant meeting the search criteria" do 
+    it "sends all data on a merchant meeting find all by id criteria" do 
       merchant1 = create(:merchant, name: "Nico", id: 1)
       merchant2 = create(:merchant, name: "Lewis", id: 2 )
 
@@ -63,7 +63,6 @@ describe "merchants API" do
 
        expect(response).to be_successful
        expect(merchant.first['name']).to eq("Nico")
-
     end
 
   end 
