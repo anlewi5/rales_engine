@@ -12,5 +12,18 @@ describe "items API" do
       expect(response).to be_successful 
       expect(items.count).to eq(3)
     end
+
+    it "returns a single item by id" do
+      item = create(:item)
+
+      get "/api/v1/items/#{item.id}"
+
+      item_response = JSON.parse(response.body)
+
+      expect(response).to be_successful
+      expect(item_response['name']).to eq(item.name)
+      expect(item_response['description']).to eq(item.description)
+      expect(item_response['unit_price']).to eq(item.unit_price)
+    end
   end 
 end
