@@ -92,5 +92,85 @@ describe "items API" do
           it_behaves_like "a response that finds a single item"
         end
       end
+
+      describe "find_all?" do
+        subject { get "/api/v1/items/find_all?#{params}" }
+
+        let(:item_response) { JSON.parse(response.body) }
+
+        before(:each) do
+          same_merchant = create(:merchant, id: 1)
+          different_merchant = create(:merchant, id: 2)
+          create(:item, id: 1,
+                        name: "SameName",
+                        description: "SameDescription",
+                        unit_price: 100,
+                        merchant_id: same_merchant.id,
+                        created_at: "2012-03-06T16:54:31",
+                        updated_at: "2013-03-06T16:54:31"
+          )
+          create(:item, id: 2,
+                        name: "SameName",
+                        description: "SameDescription",
+                        unit_price: 100,
+                        merchant_id: same_merchant.id,
+                        created_at: "2012-03-06T16:54:31",
+                        updated_at: "2013-03-06T16:54:31"
+          )
+          create(:item, id: 3,
+                        name: "ItemName",
+                        description: "ItemDescription",
+                        unit_price: 200,
+                        merchant_id: different_merchant.id,
+                        created_at: "2012-02-06T16:54:31",
+                        updated_at: "2013-02-06T16:54:31"
+          )
+        end
+
+        shared_examples_for "a response that finds item(s)" do |*item_ids|
+          #GET /api/v1/merchants/find_all?parameters
+          it "finds the correct item(s)" do
+            subject
+            expect(response).to be_success
+            expect(item_response).to be_an Array
+            expect(item_response.map { |result| result['id'] }).to contain_exactly(*item_ids)
+          end
+        end
+
+        context "by id" do
+          let(:params) { "id=2" }
+          it_behaves_like 'a response that finds item(s)', 2
+        end
+
+        context "by name" do
+          let(:params) { "name=SameItem" }
+          it_behaves_like 'a response that finds item(s)', 1, 2
+        end
+
+        context "by description" do
+          let(:params) { "description=SameDescription" }
+          it_behaves_like "a response that finds item(s)", 1, 2
+        end
+
+        context "by unit_price" do
+          let(:params) { "unit_price=100" }
+          it_behaves_like "a response that finds item(s)", 1, 2
+        end
+
+        context "by merchant_id" do
+          let(:params) { "merchant_id=1" }
+          it_behaves_like "a response that finds item(s)", 1, 2
+        end
+
+        context "by created_at" do
+          let(:params) { "created_at=2012-03-06T16:54:31" }
+          it_behaves_like "a response that finds item(s)", 1, 2
+        end
+
+        context "by updated_at" do
+          let(:params) { "updated_at=2013-03-06T16:54:31" }
+          it_behaves_like "a response that finds item(s)", 1, 2
+        end
+      end
     end
   end 
