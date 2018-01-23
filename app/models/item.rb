@@ -24,7 +24,7 @@ class Item < ApplicationRecord
     end
   end
 
-  def self.search(params)
+  def self.search_all(params)
     case
       when params["id"]
         where(id: params["id"])
