@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe "merchants API" do
   context "get request" do 
-    it "returns a list of all merchannts" do 
+    it "returns a list of all merchants" do 
       merchants = create_list(:merchant, 3)
     
       get '/api/v1/merchants'
@@ -51,6 +51,19 @@ describe "merchants API" do
     
       expect(response).to be_successful
       expect(merchant["name"]).to eq("Nico")
+    end
+
+    it "sends all data on a merchant meeting the search criteria" do 
+      merchant1 = create(:merchant, name: "Nico", id: 1)
+      merchant2 = create(:merchant, name: "Lewis", id: 2 )
+
+       get "/api/v1/merchants/find_all?id=1"
+
+       merchant = JSON.parse(response.body)
+
+       expect(response).to be_successful
+       expect(merchant.first['name']).to eq("Nico")
+
     end
 
   end 

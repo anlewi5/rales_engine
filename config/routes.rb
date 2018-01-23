@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     namespace :v1 do 
 
       namespace :merchants do 
+        get '/find_all', to: 'search#index'
         get '/random', to: 'search#show'
         get '/find',   to: 'search#show'
       end
@@ -13,6 +14,8 @@ Rails.application.routes.draw do
 
     end
   end
+
+
 
 
 

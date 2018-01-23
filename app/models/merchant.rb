@@ -2,11 +2,7 @@ class Merchant < ApplicationRecord
   has_many :items
   has_many :invoices
 
-  # def self.search(params)
-  #   if params["random"]
-  #      Merchant.find_by(id: rand(1..Merchant.count))
-  #   end
-  # end
+ 
 
   def self.search(params)
     case
@@ -20,6 +16,13 @@ class Merchant < ApplicationRecord
         Merchant.find_by(updated_at: params["updated_at"].to_datetime)
       when params
         Merchant.find_by(id: rand(1..Merchant.count))
+    end
+  end
+
+  def self.search_all(params)
+    case 
+      when params["id"]
+        Merchant.where(id: params["id"].to_i)
     end
   end
 
