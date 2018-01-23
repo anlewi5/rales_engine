@@ -1,4 +1,28 @@
 class Merchant < ApplicationRecord
   has_many :items
   has_many :invoices
+
+  # def self.search(params)
+  #   if params["random"]
+  #      Merchant.find_by(id: rand(1..Merchant.count))
+  #   end
+  # end
+
+  def self.search(params)
+    case
+      when params["id"]
+        Merchant.find_by(id: params["id"].to_i)
+      when params["name"]
+        Merchant.find_by(name: params["name"])
+      when params["created_at"]
+        Merchant.find_by(created_at: params["created_at"].to_datetime)
+      when params["updated_at"]
+        Merchant.find_by(updated_at: params["updated_at"].to_datetime)
+      when params
+        Merchant.find_by(id: rand(1..Merchant.count))
+    end
+  end
+
+
+
 end

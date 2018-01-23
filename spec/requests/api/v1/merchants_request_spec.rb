@@ -5,7 +5,6 @@ describe "merchants API" do
     it "returns a list of all merchannts" do 
       merchants = create_list(:merchant, 3)
     
-
       get '/api/v1/merchants'
 
       expect(response).to be_successful 
@@ -21,7 +20,38 @@ describe "merchants API" do
 
       expect(response).to be_successful
       expect(merchant["id"]).to eq(id)
-    
     end
+    it "can get a random merchant" do 
+      create(:merchant, id: 1)
+      create(:merchant, id: 2 )
+      create(:merchant, id: 3)
+
+      get "/api/v1/merchants/random"
+      random_merchant = JSON.parse(response.body)
+      expect(response).to be_successful
+      expect(random_merchant).to have_key("id")
+    end
+    it "finds a merchant of a given name" do 
+      merchant1 = create(:merchant, name: "Nico")
+      merchant2 = create(:merchant, name: "Lewis")
+
+      get "/api/v1/merchants/find?name=Lewis"
+      merchant = JSON.parse(response.body)
+
+      expect(response).to be_successful
+      expect(merchant["name"]).to eq("Lewis")
+    end
+
+    xit "returns data on a merchant given their id as a query paramater" do 
+      merchant1 = create(:merchant, name: "Nico")
+      merchant2 = create(:merchant, name: "Lewis")
+
+      get "/api/v1/merchants/find?id=1"
+      merchant = JSON.parse(response.body)
+    
+      expect(response).to be_successful
+      expect(merchant["name"]).to eq("Nico")
+    end
+
   end 
 end
