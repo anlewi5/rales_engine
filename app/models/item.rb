@@ -19,8 +19,8 @@ class Item < ApplicationRecord
         find_by(created_at: params["created_at"])
       when params["updated_at"]
         find_by(updated_at: params["updated_at"])
-      # when params
-      #   find(rand(1..Item.count))
+      when params
+        find(rand(1..Item.count))
     end
   end
 

@@ -26,6 +26,22 @@ describe "items API" do
       expect(item_response['unit_price']).to eq(item.unit_price)
     end
 
+    it "finds a random item" do
+      create(:item, id: 1)
+      create(:item, id: 2)
+      create(:item, id: 3)
+
+      get "/api/v1/items/random"
+
+      item_response = JSON.parse(response.body)
+
+      expect(response).to be_success
+      expect(item_response).to have_key("id")
+      expect(item_response).to have_key("name")
+      expect(item_response).to have_key("description")
+      expect(item_response).to have_key("unit_price")
+    end
+
     describe "queries" do
       describe "find?" do
         subject { get "/api/v1/items/find?#{params}" }
