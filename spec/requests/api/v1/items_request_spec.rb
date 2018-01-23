@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe "items API" do
-  context "get request" do 
+  context "get requests" do 
     it "returns a list of all items" do 
       items = create_list(:item, 3)
     
@@ -27,34 +27,18 @@ describe "items API" do
     end
 
     describe "queries" do
-
-      # let!(:merchant) {create(:merchant)}
-      # let!(:item)     {create(:item,
-      #                         name: "Camera",
-      #                         unit_price: 300,
-      #                         merchant: merchant,
-      #                         created_at: "2012-03-27T14:54:05.000Z",
-      #                         updated_at: "2012-03-27T14:54:05.000Z")}
-      # let!(:item2)    {create(:item,
-      #                         name: "Camera",
-      #                         unit_price: 300,
-      #                         merchant: merchant,
-      #                         created_at: "2012-03-27T14:54:05.000Z",
-      #                         updated_at: "2012-03-27T14:54:05.000Z")}
-      # let!(:item3)    {create(:item)}
-
-
       describe "find?"
         subject { get "/api/v1/items/find?#{params}" }
 
         let(:item_response) { JSON.parse(response.body) }
 
         before(:each) do
+          merchant = create(:merchant, id: 1)
           create(:item, id: 1,
                         name: "ItemName",
                         description: "ItemDescription",
                         unit_price: 100,
-                        merchant_id: 1
+                        merchant_id: merchant.id,
                         created_at: "2012-03-06T16:54:31",
                         updated_at: "2013-03-06T16:54:31"
           )
@@ -70,8 +54,6 @@ describe "items API" do
             expect(item_response["description"]).to eq("ItemDescription")
             expect(item_response["unit_price"]).to eq(100)
             expect(item_response["merchant_id"]).to eq(1)
-            expect(item_response["created_at"]).to eq("2012-03-06T16:54:31")
-            expect(item_response["updated_at"]).to eq("2013-03-06T16:54:31")
           end
         end
 
@@ -80,36 +62,35 @@ describe "items API" do
           it_behaves_like "a response that finds a single item"
         end
 
-        it "by name" do
+        context "by name" do
           let(:params) { "name=ItemName" }
           it_behaves_like "a response that finds a single item"
         end
 
-        it "by description" do
+        context "by description" do
           let(:params) { "description=ItemDescription" }
           it_behaves_like "a response that finds a single item"
         end
 
-        it "by unit_price" do
+        context "by unit_price" do
           let(:params) { "unit_price=100" }
           it_behaves_like "a response that finds a single item"
         end
 
-        it "by merchant_id" do
+        context "by merchant_id" do
           let(:params) { "merchant_id=1" }
           it_behaves_like "a response that finds a single item"
         end
 
-        it "by created_at" do
+        context "by created_at" do
           let(:params) { "created_at=2012-03-06T16:54:31" }
           it_behaves_like "a response that finds a single item"
         end
 
-        it "by updated_at" do
+        context "by updated_at" do
           let(:params) { "updated_at=2013-03-06T16:54:31" }
           it_behaves_like "a response that finds a single item"
         end
       end
     end
   end 
-end
