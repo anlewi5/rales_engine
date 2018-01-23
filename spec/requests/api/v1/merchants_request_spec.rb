@@ -42,9 +42,9 @@ describe "merchants API" do
       expect(merchant["name"]).to eq("Lewis")
     end
 
-    xit "returns data on a merchant given their id as a query paramater" do 
-      merchant1 = create(:merchant, name: "Nico")
-      merchant2 = create(:merchant, name: "Lewis")
+    it "returns data on a merchant given their id as a query paramater" do 
+      merchant1 = create(:merchant, name: "Nico", id: 1)
+      merchant2 = create(:merchant, name: "Lewis", id: 2 )
 
       get "/api/v1/merchants/find?id=1"
       merchant = JSON.parse(response.body)
