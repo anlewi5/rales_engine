@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe "items API" do
-  context "get requests" do 
+  context "get request" do 
     it "returns a list of all items" do 
       items = create_list(:item, 3)
     
@@ -27,7 +27,7 @@ describe "items API" do
     end
 
     describe "queries" do
-      describe "find?"
+      describe "find?" do
         subject { get "/api/v1/items/find?#{params}" }
 
         let(:item_response) { JSON.parse(response.body) }
@@ -118,8 +118,8 @@ describe "items API" do
                         updated_at: "2013-03-06T16:54:31"
           )
           create(:item, id: 3,
-                        name: "ItemName",
-                        description: "ItemDescription",
+                        name: "DifferentName",
+                        description: "DifferentDescription",
                         unit_price: 200,
                         merchant_id: different_merchant.id,
                         created_at: "2012-02-06T16:54:31",
@@ -143,7 +143,7 @@ describe "items API" do
         end
 
         context "by name" do
-          let(:params) { "name=SameItem" }
+          let(:params) { "name=SameName" }
           it_behaves_like 'a response that finds item(s)', 1, 2
         end
 
@@ -174,3 +174,4 @@ describe "items API" do
       end
     end
   end 
+end

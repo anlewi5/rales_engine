@@ -23,4 +23,27 @@ class Item < ApplicationRecord
       #   find(rand(1..Item.count))
     end
   end
+
+  def self.search(params)
+    case
+      when params["id"]
+        where(id: params["id"])
+      when params["name"]
+        where(name: params["name"])
+      when params["description"]
+        where(description: params["description"])
+      when params["unit_price"]
+        where(unit_price: params["unit_price"])
+      when params["merchant_id"]
+        where(merchant_id: params["merchant_id"])
+      when params["created_at"]
+        where(created_at: params["created_at"])
+      when params["updated_at"]
+        where(updated_at: params["updated_at"])
+      # when params
+      #   find(rand(1..Item.count))
+    end
+  end
 end
+
+
