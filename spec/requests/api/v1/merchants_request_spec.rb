@@ -65,5 +65,15 @@ describe "merchants API" do
        expect(merchant.first['name']).to eq("Nico")
     end
 
+    it "finds a merchant from a given created at" do 
+      merchant1 = create(:merchant, created_at: "2018-01-23T20:23:21.571Z")
+     
+      get "/api/v1/merchants/find?created_at=2018-01-23T20:23:21.571Z"
+
+      merchant = JSON.parse(response.body)
+      expect(response).to be_successful
+      expect(merchant['created_at']).to eq("2018-01-23T20:23:21.571Z")
+    end
+
   end 
 end
