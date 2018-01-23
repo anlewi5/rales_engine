@@ -25,6 +25,10 @@ class Merchant < ApplicationRecord
         Merchant.where(id: params["id"].to_i)
       when params["created_at"]
         Merchant.where(created_at: params["created_at"].to_datetime)
+      when params["updated_at"]
+        Merchant.where(updated_at: params["updated_at"].to_datetime)
+      when params["name"]
+        Merchant.where(name: params["name"])
     end
   end
 

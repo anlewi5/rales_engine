@@ -42,7 +42,20 @@ describe "merchants API" do
       expect(merchant["name"]).to eq("Lewis")
     end
 
-    it "returns data on a merchant given their id as a query paramater" do 
+    it "finds all merchants with a given name" do 
+      merchant1 = create(:merchant, name: "Nico")
+      merchant2 = create(:merchant, name: "Nico")
+
+      get "/api/v1/merchants/find_all?name=Nico"
+
+      merchant = JSON.parse(response.body)
+
+      expect(response).to be_successful
+      expect(merchant).to be_an(Array)
+      expect(merchant.count).to be(2)
+    end
+
+    it "finds a merchant from a given id" do 
       merchant1 = create(:merchant, name: "Nico", id: 1)
       merchant2 = create(:merchant, name: "Lewis", id: 2 )
 
@@ -53,7 +66,7 @@ describe "merchants API" do
       expect(merchant["name"]).to eq("Nico")
     end
 
-    it "sends all data on a merchant meeting find all by id criteria" do 
+    it "finds all merchants from a given id" do 
       merchant1 = create(:merchant, name: "Nico", id: 1)
       merchant2 = create(:merchant, name: "Lewis", id: 2 )
 
@@ -62,6 +75,7 @@ describe "merchants API" do
        merchant = JSON.parse(response.body)
 
        expect(response).to be_successful
+       expect(merchant).to be_an(Array)
        expect(merchant.first['name']).to eq("Nico")
     end
 
@@ -84,6 +98,30 @@ describe "merchants API" do
       merchant = JSON.parse(response.body)
       expect(response).to be_successful
       expect(merchant).to be_an(Array)
+      expect(merchant.count).to eq(2)
+    end
+
+    it "finds a given merchant from an updated at" do 
+       merchant1 = create(:merchant, updated_at: "2018-01-23T20:23:21.571Z")
+     
+      get "/api/v1/merchants/find?updated_at=2018-01-23T20:23:21.571Z"
+
+      merchant = JSON.parse(response.body)
+      expect(response).to be_successful
+      expect(merchant['updated_at']).to eq("2018-01-23T20:23:21.571Z")
+    end
+
+    it "finds all merchants from a given updated at" do 
+      merchant1 = create(:merchant, updated_at: "2018-01-23T20:23:21.571Z")
+      merchant2 = create(:merchant, updated_at: "2018-01-23T20:23:21.571Z")
+
+      get "/api/v1/merchants/find_all?updated_at=2018-01-23T20:23:21.571Z"
+
+      merchant = JSON.parse(response.body)
+      expect(response).to be_successful
+      expect(merchant).to be_an(Array)
+      expect(merchant.count).to eq(2)
+
     end
 
   end 
