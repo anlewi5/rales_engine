@@ -14,7 +14,7 @@ describe "invoice_items API" do
     end
 
     it "returns a single invoice_item by id" do
-      invoice_item = create(:invoice_item)
+      invoice_item = create(:invoice_item, unit_price: 101)
  
       get "/api/v1/invoice_items/#{invoice_item.id}"
 
@@ -22,7 +22,7 @@ describe "invoice_items API" do
 
       expect(response).to be_successful
       expect(invoice_item_response['quantity']).to eq(invoice_item.quantity)
-      expect(invoice_item_response['unit_price']).to eq(invoice_item.unit_price)
+      expect(invoice_item_response['unit_price']).to eq("1.01")
       expect(invoice_item_response['item_id']).to eq(invoice_item.item_id)
       expect(invoice_item_response['invoice_id']).to eq(invoice_item.invoice_id)
     end
@@ -71,7 +71,7 @@ describe "invoice_items API" do
             expect(response).to be_success
             expect(invoice_item_response["id"]).to eq(1)
             expect(invoice_item_response["quantity"]).to eq(1)
-            # expect(invoice_item_response["unit_price"]).to eq("1.01")
+            expect(invoice_item_response["unit_price"]).to eq("1.01")
             expect(invoice_item_response["item_id"]).to eq(1)
             expect(invoice_item_response["invoice_id"]).to eq(1)
           end
