@@ -14,7 +14,7 @@ describe "items API" do
     end
 
     it "returns a single item by id" do
-      item = create(:item)
+      item = create(:item, unit_price: 101)
 
       get "/api/v1/items/#{item.id}"
 
@@ -23,7 +23,7 @@ describe "items API" do
       expect(response).to be_successful
       expect(item_response['name']).to eq(item.name)
       expect(item_response['description']).to eq(item.description)
-      expect(item_response['unit_price']).to eq(item.unit_price)
+      expect(item_response['unit_price']).to eq("1.01")
     end
 
     it "finds a random item" do
@@ -53,7 +53,7 @@ describe "items API" do
           create(:item, id: 1,
                         name: "ItemName",
                         description: "ItemDescription",
-                        unit_price: 100,
+                        unit_price: 101,
                         merchant_id: merchant.id,
                         created_at: "2012-03-06T16:54:31",
                         updated_at: "2013-03-06T16:54:31"
@@ -68,7 +68,7 @@ describe "items API" do
             expect(item_response["id"]).to eq(1)
             expect(item_response["name"]).to eq("ItemName")
             expect(item_response["description"]).to eq("ItemDescription")
-            expect(item_response["unit_price"]).to eq(100)
+            expect(item_response["unit_price"]).to eq("1.01")
             expect(item_response["merchant_id"]).to eq(1)
           end
         end
@@ -89,7 +89,7 @@ describe "items API" do
         end
 
         context "by unit_price" do
-          let(:params) { "unit_price=100" }
+          let(:params) { "unit_price=1.01" }
           it_behaves_like "a response that finds a single item"
         end
 
@@ -120,7 +120,7 @@ describe "items API" do
           create(:item, id: 1,
                         name: "SameName",
                         description: "SameDescription",
-                        unit_price: 100,
+                        unit_price: 101,
                         merchant_id: same_merchant.id,
                         created_at: "2012-03-06T16:54:31",
                         updated_at: "2013-03-06T16:54:31"
@@ -128,7 +128,7 @@ describe "items API" do
           create(:item, id: 2,
                         name: "SameName",
                         description: "SameDescription",
-                        unit_price: 100,
+                        unit_price: 101,
                         merchant_id: same_merchant.id,
                         created_at: "2012-03-06T16:54:31",
                         updated_at: "2013-03-06T16:54:31"
@@ -136,7 +136,7 @@ describe "items API" do
           create(:item, id: 3,
                         name: "DifferentName",
                         description: "DifferentDescription",
-                        unit_price: 200,
+                        unit_price: 201,
                         merchant_id: different_merchant.id,
                         created_at: "2012-02-06T16:54:31",
                         updated_at: "2013-02-06T16:54:31"
@@ -169,7 +169,7 @@ describe "items API" do
         end
 
         context "by unit_price" do
-          let(:params) { "unit_price=100" }
+          let(:params) { "unit_price=1.01" }
           it_behaves_like "a response that finds item(s)", 1, 2
         end
 
