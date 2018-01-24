@@ -14,6 +14,7 @@ describe "Item relationships" do
     get "/api/v1/items/#{item.id}/invoice_items" 
     item = JSON.parse(response.body)
 
+    expect(response).to be_successful
     expect(item.first).to have_key("id")
     expect(item.first).to have_key("quantity")
     expect(item.class).to eq(Array)
@@ -23,6 +24,7 @@ describe "Item relationships" do
     get "/api/v1/items/#{item.id}/merchant"
     merchant = JSON.parse(response.body)
 
+    expect(response).to be_successful
     expect(merchant).to have_key("id")
     expect(merchant).to have_key("name")
   end
