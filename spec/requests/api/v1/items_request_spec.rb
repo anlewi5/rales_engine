@@ -63,7 +63,6 @@ describe "items API" do
         end
 
         shared_examples_for "a response that finds a single item" do
-          #GET /api/v1/merchants/find?parameters
           it "finds the correct item" do
             subject
             expect(response).to be_success
@@ -146,7 +145,6 @@ describe "items API" do
         end
 
         shared_examples_for "a response that finds item(s)" do |*item_ids|
-          #GET /api/v1/merchants/find_all?parameters
           it "finds the correct item(s)" do
             subject
             expect(response).to be_success

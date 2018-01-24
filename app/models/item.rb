@@ -42,8 +42,6 @@ class Item < ApplicationRecord
         where(created_at: params["created_at"].to_datetime)
       when params["updated_at"]
         where(updated_at: params["updated_at"].to_datetime)
-      # when params
-      #   find(rand(1..Item.count))
     end
   end
 end
