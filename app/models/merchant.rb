@@ -2,8 +2,6 @@ class Merchant < ApplicationRecord
   has_many :items
   has_many :invoices
 
- 
-
   def self.search(params)
     case
       when params["id"]
@@ -32,6 +30,16 @@ class Merchant < ApplicationRecord
     end
   end
 
+  def self.revenue(params)
+    revenue = Merchant.joins(invoices: [:transactions, :invoice_items]).
+      where(transactions: { result: "success" }).
+      where(id: params[:id]).
+      group("merchants.id").
+      sum("invoice_items.unit_price * invoice_items.quantity").
+      values.
+      first
 
+    { revenue: revenue / 100.0 }
+  end
 
 end

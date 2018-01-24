@@ -68,47 +68,47 @@ describe "transaction requests" do
   end
 
   it "can find a transaction given a created at" do 
-    create(:transaction, created_at: "2018-01-23T20:23:21.571Z")
+    create(:transaction, credit_card_number: "12345", created_at: "2018-01-23T20:23:21.571Z")
 
     get "/api/v1/transactions/find?created_at=2018-01-23T20:23:21.571Z"
 
     transaction = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(transaction['created_at']).to eq("2018-01-23T20:23:21.571Z")
+    expect(transaction['credit_card_number']).to eq("12345")
   end
 
   it "can find all transactions given a created at" do 
-    create(:transaction, created_at: "2018-01-23T20:23:21.571Z")
-    create(:transaction, created_at: "2018-01-23T20:23:21.571Z")
+    create(:transaction, credit_card_number: "12345", created_at: "2018-01-23T20:23:21.571Z")
+    create(:transaction, credit_card_number: "54321",created_at: "2018-01-23T20:23:21.571Z")
 
     get "/api/v1/transactions/find_all?created_at=2018-01-23T20:23:21.571Z"
 
     transaction = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(transaction.first['created_at']).to eq("2018-01-23T20:23:21.571Z")
-    expect(transaction.second['created_at']).to eq("2018-01-23T20:23:21.571Z")
+    expect(transaction.first['credit_card_number']).to eq("12345")
+    expect(transaction.second['credit_card_number']).to eq("54321")
   end
 
   it "can find a transaction given a updated at" do 
-    create(:transaction, updated_at: "2018-01-23T20:23:21.571Z")
+    create(:transaction, credit_card_number: "12345", updated_at: "2018-01-23T20:23:21.571Z")
 
     get "/api/v1/transactions/find?updated_at=2018-01-23T20:23:21.571Z"
 
     transaction = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(transaction['updated_at']).to eq("2018-01-23T20:23:21.571Z")
+    expect(transaction['credit_card_number']).to eq("12345")
   end
 
   it "can find all transactions given an updated at" do 
-    create(:transaction, updated_at: "2018-01-23T20:23:21.571Z")
-    create(:transaction, updated_at: "2018-01-23T20:23:21.571Z")
+    create(:transaction, credit_card_number: "12345", updated_at: "2018-01-23T20:23:21.571Z")
+    create(:transaction, credit_card_number: "54321",updated_at: "2018-01-23T20:23:21.571Z")
 
     get "/api/v1/transactions/find_all?updated_at=2018-01-23T20:23:21.571Z"
 
     transactions = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(transactions.first['updated_at']).to eq("2018-01-23T20:23:21.571Z")
-    expect(transactions.second['updated_at']).to eq("2018-01-23T20:23:21.571Z")
+    expect(transactions.first['credit_card_number']).to eq("12345")
+    expect(transactions.second['credit_card_number']).to eq("54321")
   end 
   it "can find a transaction given a credit card number" do
     transaction1 = create(:transaction)

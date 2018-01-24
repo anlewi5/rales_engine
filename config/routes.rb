@@ -8,6 +8,7 @@ Rails.application.routes.draw do
         get '/find_all', to: 'search#index'
         get '/random', to: 'search#show'
         get '/find',   to: 'search#show'
+        get '/:id/revenue', to: 'reports#revenue'
       end
 
       namespace :transactions do 
@@ -15,8 +16,6 @@ Rails.application.routes.draw do
         get '/random', to: 'search#show'
         get '/find',   to: 'search#show'
       end
-
-    
 
       namespace :customers do 
         get '/find',   to: 'search#show'
