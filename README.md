@@ -16,7 +16,7 @@ In order to run this appication in the development environment, perform the foll
 ```
 bundle install
 rake db:create db:migrate
-rake import_all
+rake import_csv
 ```
 
 In order to spin-up the server, run: `rails s`
