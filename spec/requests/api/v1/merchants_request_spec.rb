@@ -80,13 +80,13 @@ describe "merchants API" do
     end
 
     it "finds a merchant from a given created at" do 
-      merchant1 = create(:merchant, created_at: "2018-01-23T20:23:21.571Z")
+      merchant1 = create(:merchant, name: "Nico", created_at: "2018-01-23T20:23:21.571Z")
      
       get "/api/v1/merchants/find?created_at=2018-01-23T20:23:21.571Z"
 
       merchant = JSON.parse(response.body)
       expect(response).to be_successful
-      expect(merchant['created_at']).to eq("2018-01-23T20:23:21.571Z")
+      expect(merchant['name']).to eq("Nico")
     end
 
     it "finds all merchants from a given created at" do 
@@ -102,13 +102,13 @@ describe "merchants API" do
     end
 
     it "finds a given merchant from an updated at" do 
-       merchant1 = create(:merchant, updated_at: "2018-01-23T20:23:21.571Z")
+       merchant1 = create(:merchant, name: "Nico", updated_at: "2018-01-23T20:23:21.571Z")
      
       get "/api/v1/merchants/find?updated_at=2018-01-23T20:23:21.571Z"
 
       merchant = JSON.parse(response.body)
       expect(response).to be_successful
-      expect(merchant['updated_at']).to eq("2018-01-23T20:23:21.571Z")
+      expect(merchant['name']).to eq("Nico")
     end
 
     it "finds all merchants from a given updated at" do 
@@ -124,5 +124,22 @@ describe "merchants API" do
 
     end
 
+    it "returns the revenue for a given merchant" do
+      merchant = create(:merchant)
+      invoice = create(:invoice, merchant: merchant)
+      item1 = create(:item, merchant: merchant)
+      item2 = create(:item, merchant: merchant)
+
+      create(:invoice_item, invoice: invoice, item: item1, unit_price: 111, quantity: 1)
+      create(:invoice_item, invoice: invoice, item: item2, unit_price: 222, quantity: 3)
+
+      create(:transaction, result: "success", invoice: invoice)
+
+      get "/api/v1/merchants/#{merchant.id}/revenue"
+
+      revenue = JSON.parse(response.body)
+      expect(response).to be_successful
+      expect(revenue['revenue']).to eq(7.77)
+    end
   end 
 end

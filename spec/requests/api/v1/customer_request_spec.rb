@@ -83,44 +83,44 @@ describe "customer requests" do
     expect(customer.count).to eq(2)
   end
   it "can find a customer given a created at date" do 
-    create(:customer, created_at: "2018-01-23T20:23:21.571Z")
+    customer1 = create(:customer, first_name: "Nico", created_at: "2018-01-23T20:23:21.571Z")
 
     get "/api/v1/customers/find?created_at=2018-01-23T20:23:21.571Z"
 
     customer = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(customer['created_at']).to eq("2018-01-23T20:23:21.571Z")
+    expect(customer['first_name']).to eq("Nico")
   end
   it "can find all customers given a created at date" do 
-    create(:customer, created_at: "2018-01-23T20:23:21.571Z")
-    create(:customer, created_at: "2018-01-23T20:23:21.571Z")
+    create(:customer, first_name: "Nico", created_at: "2018-01-23T20:23:21.571Z")
+    create(:customer, first_name: "Lewis", created_at: "2018-01-23T20:23:21.571Z")
 
     get "/api/v1/customers/find_all?created_at=2018-01-23T20:23:21.571Z"
 
     customer = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(customer.first['created_at']).to eq("2018-01-23T20:23:21.571Z")
-    expect(customer.second['created_at']).to eq("2018-01-23T20:23:21.571Z")
+    expect(customer.first['first_name']).to eq("Nico")
+    expect(customer.second['first_name']).to eq("Lewis")
   end
     it "can find a customer given a updated at date" do 
-    create(:customer, updated_at: "2018-01-23T20:23:21.571Z")
+    customer1 = create(:customer, first_name: "Nico", updated_at: "2018-01-23T20:23:21.571Z")
 
     get "/api/v1/customers/find?updated_at=2018-01-23T20:23:21.571Z"
 
     customer = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(customer['updated_at']).to eq("2018-01-23T20:23:21.571Z")
+    expect(customer['first_name']).to eq("Nico")
   end
   it "can find all customers given a updated at date" do 
-    create(:customer, updated_at: "2018-01-23T20:23:21.571Z")
-    create(:customer, updated_at: "2018-01-23T20:23:21.571Z")
+    create(:customer, first_name: "Nico", updated_at: "2018-01-23T20:23:21.571Z")
+    create(:customer, first_name: "Lewis", updated_at: "2018-01-23T20:23:21.571Z")
 
     get "/api/v1/customers/find_all?updated_at=2018-01-23T20:23:21.571Z"
 
     customer = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(customer.first['updated_at']).to eq("2018-01-23T20:23:21.571Z")
-    expect(customer.second['updated_at']).to eq("2018-01-23T20:23:21.571Z")
+    expect(customer.first['first_name']).to eq("Nico")
+    expect(customer.second['first_name']).to eq("Lewis")
   end
 
   it "can find a random customer" do 

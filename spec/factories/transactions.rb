@@ -1,7 +1,14 @@
 FactoryBot.define do
   factory :transaction do
-    invoice nil
-    credit_card_number "MyString"
-    result "MyString"
+    sequence :credit_card_number do 
+      Faker::Number.number(16) 
+    end
+    
+    sequence :result do 
+      ["success", "failed"].sample
+    end
+
+    invoice 
+   
   end
 end
