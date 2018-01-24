@@ -141,5 +141,23 @@ describe "merchants API" do
       expect(response).to be_successful
       expect(revenue['revenue']).to eq(7.77)
     end
+    it "returns the revenue for a merchant given a date" do 
+      merchant = create(:merchant)
+      invoice = create(:invoice, merchant: merchant)
+      item1 = create(:item, merchant: merchant)
+      item2 = create(:item, merchant: merchant)
+
+      create(:invoice_item, invoice: invoice, item: item1, unit_price: 111, quantity: 1, created_at: "2012-03-27 14:54:11")
+      create(:invoice_item, invoice: invoice, item: item2, unit_price: 222, quantity: 3, created_at: "2012-03-27 14:54:11")
+      create(:invoice_item, invoice: invoice, item: item2, unit_price: 222, quantity: 3, created_at: "2012-03-29 14:54:11")
+
+      create(:transaction, result: "success", invoice: invoice)
+
+      get "/api/v1/merchants/#{merchant.id}/revenue?date=2012-03-27 14:54:11"
+
+      revenue = JSON.parse(response.body)
+      expect(response).to be_successful
+      expect(revenue['revenue']).to eq(7.77)
+    end
   end 
 end
