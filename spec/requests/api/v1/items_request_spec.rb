@@ -40,6 +40,8 @@ describe "items API" do
       expect(item_response).to have_key("name")
       expect(item_response).to have_key("description")
       expect(item_response).to have_key("unit_price")
+      expect(merchant).not_to have_key("updated_at")
+      expect(merchant).not_to have_key("created_at")
     end
 
     describe "queries" do
