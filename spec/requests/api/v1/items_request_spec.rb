@@ -24,6 +24,7 @@ describe "items API" do
       expect(item_response['name']).to eq(item.name)
       expect(item_response['description']).to eq(item.description)
       expect(item_response['unit_price']).to eq("1.01")
+      expect(item_response['merchant_id']).to eq(item.merchant_id)
     end
 
     it "finds a random item" do
