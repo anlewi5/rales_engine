@@ -18,4 +18,12 @@ describe "Item relationships" do
     expect(item.first).to have_key("quantity")
     expect(item.class).to eq(Array)
   end
+  it "returns the associated merchant of an item" do 
+
+    get "/api/v1/items/#{item.id}/merchant"
+    merchant = JSON.parse(response.body)
+
+    expect(merchant).to have_key("id")
+    expect(merchant).to have_key("name")
+  end
 end
