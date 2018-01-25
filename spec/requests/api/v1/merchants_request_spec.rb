@@ -208,6 +208,29 @@ describe "merchants API" do
       expect(merchant_response.count).to eq(2)
       expect(first_merchant["id"]).to eq(merchant1.id)
       expect(second_merchant["id"]).to eq(merchant2.id)
+    end
+
+    it "returns a merchant where the customer has conducted the most successful transactions" do 
+      # merchant = create(:merchant)
+      # item = create(:item, merchant: merchant)
+
+      # customer1 = create(:customer)
+      # invoice1 = create(:invoice, merchant: merchant, customer: customer1)
+      # transaction1 = create(:transaction, result: "success", invoice: invoice1)
+      # transaction2 = create(:transaction, result: "success", invoice: invoice1)
+      # create(:invoice_item, invoice: invoice1, item: item, unit_price: 111, quantity: 1, created_at: "2012-03-27 14:54:11")
+
+
+      # customer2 = create(:customer)
+      # invoice2 = create(:invoice, merchant: merchant, customer: customer2)
+      # transaction3 = create(:transaction, result: "success", invoice: invoice2)
+      # create(:invoice_item, invoice: invoice2, item: item, unit_price: 111, quantity: 1, created_at: "2012-03-27 14:54:11")
+
+      # GET /api/v1/customers/:id/favorite_merchant
+
+      customer = create(:customer, id: 1)
+
+      get  "/api/v1/customers/1/favorite_merchant"
 
     end
   end 
