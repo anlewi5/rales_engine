@@ -5,7 +5,7 @@ describe "transaction relationships" do
     create(:invoice, id: 1)
     create(:transaction, id: 1, invoice_id: 1)
 
-    get '/api/v1/transations/1/invoice'
+    get '/api/v1/transactions/1/invoice'
 
     invoice = JSON.parse(response.body)
 
