@@ -2,6 +2,8 @@ class Merchant < ApplicationRecord
   has_many :items
   has_many :invoices
 
+  has_many :customers, through: :invoices
+
   def self.search(params)
     case
       when params["id"]
@@ -38,6 +40,15 @@ class Merchant < ApplicationRecord
     end
   end
 
+  def self.favorite_customer(merchant_id)
+    Customer.joins(:merchants, invoices: :transactions)
+      .where(merchants: {id: merchant_id} )
+      .merge(Transaction.successful)
+      .group("customers.id")
+      .order("count(customers.id) DESC")
+      .first
+  end
+
   private
 
   def self.total_revenue(params)
@@ -65,5 +76,7 @@ class Merchant < ApplicationRecord
   def self.revenue_to_json(revenue)
     { revenue: revenue / 100.0 }
   end
+
+#  SELECT "merchants".* FROM "merchants" INNER JOIN "invoices" ON "invoices"."merchant_id" = "merchants"."id" INNER JOIN "customers" ON "customers"."id" = "invoices"."customer_id" INNER JOIN "invoices" "invoices_merchants" ON "invoices_merchants"."merchant_id" = "merchants"."id" INNER JOIN "transactions" ON "transactions"."invoice_id" = "invoices_merchants"."id" WHERE "merchants"."id" = 1
 
 end

@@ -159,5 +159,29 @@ describe "merchants API" do
       expect(response).to be_successful
       expect(revenue['revenue']).to eq(7.77)
     end
+    it " returns the customer who has conducted the most total number of successful transactions" do 
+      merchant = create(:merchant)
+      item = create(:item, merchant: merchant)
+
+      customer1 = create(:customer)
+      invoice1 = create(:invoice, merchant: merchant, customer: customer1)
+      transaction1 = create(:transaction, result: "success", invoice: invoice1)
+      transaction2 = create(:transaction, result: "success", invoice: invoice1)
+      create(:invoice_item, invoice: invoice1, item: item, unit_price: 111, quantity: 1, created_at: "2012-03-27 14:54:11")
+
+
+      customer2 = create(:customer)
+      invoice2 = create(:invoice, merchant: merchant, customer: customer2)
+      transaction3 = create(:transaction, result: "success", invoice: invoice2)
+      create(:invoice_item, invoice: invoice2, item: item, unit_price: 111, quantity: 1, created_at: "2012-03-27 14:54:11")
+
+
+      get "/api/v1/merchants/#{merchant.id}/favorite_customer"
+
+      favorite_customer = JSON.parse(response.body)
+      expect(response).to be_successful
+      expect(favorite_customer["id"]).to eq(customer1.id)
+
+    end
   end 
 end
