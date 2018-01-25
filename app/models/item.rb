@@ -44,6 +44,20 @@ class Item < ApplicationRecord
         where(updated_at: params["updated_at"].to_datetime)
     end
   end
+
+  def self.best_day(item_id)
+      find(item_id)
+      .invoices
+      .select("invoices.*, invoice_items.quantity")
+      .joins(invoice_items: [invoice: :transactions])
+      .merge(Transaction.unscoped.successful)
+      .order("invoice_items.quantity DESC, invoice_items.created_at DESC")
+      .first
+      .created_at
+  end
+
+
+
 end
 
 

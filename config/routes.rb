@@ -31,6 +31,7 @@ Rails.application.routes.draw do
         get '/find_all', to: 'search#index'
         get '/find', to: 'search#show'
         get '/random', to: 'search#show'
+        get '/:id/best_day', to: 'best_day#show'
       end
 
       namespace :invoices do
