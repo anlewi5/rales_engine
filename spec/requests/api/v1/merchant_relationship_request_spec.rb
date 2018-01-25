@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe "invoice relationships" do
+describe "merchant relationships" do
   it "returns the associated items" do
     create(:merchant, id: 1)
     create(:item, merchant_id: 1)
@@ -23,7 +23,6 @@ describe "invoice relationships" do
 # what does 'known orders' mean?
   it "returns the associated invoices from a merchants known orders" do
     create(:merchant, id: 1)
-    create(:invoice, merchant_id: 1)
     create(:invoice, merchant_id: 1)
     create(:invoice, merchant_id: 1)
 
