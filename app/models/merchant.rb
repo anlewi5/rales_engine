@@ -85,7 +85,4 @@ class Merchant < ApplicationRecord
   def self.revenue_to_json(revenue)
     { revenue: revenue / 100.0 }
   end
-
-#  SELECT "merchants".* FROM "merchants" INNER JOIN "invoices" ON "invoices"."merchant_id" = "merchants"."id" INNER JOIN "customers" ON "customers"."id" = "invoices"."customer_id" INNER JOIN "invoices" "invoices_merchants" ON "invoices_merchants"."merchant_id" = "merchants"."id" INNER JOIN "transactions" ON "transactions"."invoice_id" = "invoices_merchants"."id" WHERE "merchants"."id" = 1
-
 end

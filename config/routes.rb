@@ -33,6 +33,7 @@ Rails.application.routes.draw do
         get '/random', to: 'search#show'
         get '/:id/best_day', to: 'best_day#show'
         get "/most_items", to: 'most_items#index'
+        get "/most_revenue", to: "most_revenue#index"
       end
 
       namespace :invoices do
