@@ -227,9 +227,35 @@ describe "merchants API" do
 
       expect(response).to be_successful
       expect(merchant["id"]).to eq(merchant1.id) 
+    end
+    it "returns the top x merchants ranked by total revenue" do 
+      merchant1 = create(:merchant)
+      merchant2 = create(:merchant)
+      merchant3 = create(:merchant)
+
+      invoice1 = create(:invoice, merchant: merchant1)
+      invoice2 = create(:invoice, merchant: merchant2)
+      invoice3 = create(:invoice, merchant: merchant3)
+      
+      transaction = create(:transaction, invoice: invoice1, result: "success") 
+      transaction = create(:transaction, invoice: invoice2, result: "success") 
+      transaction = create(:transaction, invoice: invoice3, result: "success") 
+
+      invoice_item1 = create(:invoice_item, invoice: invoice1, quantity: 3, unit_price: 3)
+      invoice_item2 = create(:invoice_item, invoice: invoice1, quantity: 1, unit_price: 1)
+      invoice_item3 = create(:invoice_item, invoice: invoice2, quantity: 2, unit_price: 2)
+      invoice_item4 = create(:invoice_item, invoice: invoice3, quantity: 1, unit_price: 1)
+
+      
+      get "/api/v1/merchants/most_revenue?quantity=2"
       
 
+      top_merchants = JSON.parse(response.body)
 
+      expect(response).to be_successful
+      expect(top_merchants.count).to eq(2)
+      expect(top_merchants.first["id"]).to eq(merchant1.id)
+    
     end
   end 
 end
