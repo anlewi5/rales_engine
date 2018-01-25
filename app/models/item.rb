@@ -56,7 +56,16 @@ class Item < ApplicationRecord
       .created_at
   end
 
-
+ 
+  def self.most_items(params)
+      unscoped
+      .select("items.*, sum(invoice_items.quantity) AS total_quantity")
+      .joins(invoices: :transactions)
+      .merge(Transaction.successful)
+      .group(:id)
+      .order("total_quantity DESC")
+      .limit(params[:quantity])
+  end
 
 end
 
