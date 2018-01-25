@@ -2,6 +2,8 @@ class Merchant < ApplicationRecord
   has_many :items
   has_many :invoices
 
+  has_many :customers, through: :invoices
+
   def self.search(params)
     case
       when params["id"]
@@ -31,15 +33,50 @@ class Merchant < ApplicationRecord
   end
 
   def self.revenue(params)
-    revenue = Merchant.joins(invoices: [:transactions, :invoice_items]).
-      where(transactions: { result: "success" }).
-      where(id: params[:id]).
-      group("merchants.id").
-      sum("invoice_items.unit_price * invoice_items.quantity").
-      values.
-      first
+    if params["date"]
+      revenue_by_date(params)
+    else
+      total_revenue(params)
+    end
+  end
 
+  def self.favorite_customer(merchant_id)
+    Customer.joins(:merchants, invoices: :transactions)
+      .where(merchants: {id: merchant_id} )
+      .merge(Transaction.successful)
+      .group("customers.id")
+      .order("count(customers.id) DESC")
+      .first
+  end
+
+  private
+
+  def self.total_revenue(params)
+    revenue = revenue_for_merchant(params[:id]).first.revenue
+    revenue_to_json(revenue)
+  end
+
+  def self.revenue_by_date(params)
+    revenue = revenue_for_merchant(params[:id])
+      .where(invoice_items: { created_at: params["date"] } )
+      .first
+      .revenue
+
+    revenue_to_json(revenue)
+  end
+
+  def self.revenue_for_merchant(merchant_id)
+    Merchant.select("merchants.*, sum(invoice_items.quantity * invoice_items.unit_price) AS revenue")
+    .joins(invoices: [:transactions, :invoice_items])
+    .where(id: merchant_id)
+    .merge(Transaction.successful)
+    .group(:id)
+  end
+
+  def self.revenue_to_json(revenue)
     { revenue: revenue / 100.0 }
   end
+
+#  SELECT "merchants".* FROM "merchants" INNER JOIN "invoices" ON "invoices"."merchant_id" = "merchants"."id" INNER JOIN "customers" ON "customers"."id" = "invoices"."customer_id" INNER JOIN "invoices" "invoices_merchants" ON "invoices_merchants"."merchant_id" = "merchants"."id" INNER JOIN "transactions" ON "transactions"."invoice_id" = "invoices_merchants"."id" WHERE "merchants"."id" = 1
 
 end

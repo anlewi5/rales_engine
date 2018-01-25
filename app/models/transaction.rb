@@ -1,6 +1,11 @@
 class Transaction < ApplicationRecord
   belongs_to :invoice
 
+  
+
+  scope  :successful, -> { where(result: "success") }
+  scope  :not_successful, -> { where(result: "failed") }
+
   def self.search(params)
     case 
       when params["id"]
@@ -18,8 +23,6 @@ class Transaction < ApplicationRecord
     end
   end
 
-
-
   def self.search_all(params)
     case 
       when params["id"]
@@ -35,8 +38,6 @@ class Transaction < ApplicationRecord
       when params["result"]
         where(result: params["result"])
     end
-
   end
-
 
 end
