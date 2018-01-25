@@ -9,7 +9,9 @@ Rails.application.routes.draw do
         get '/random', to: 'search#show'
         get '/find',   to: 'search#show'
         get '/:id/revenue', to: 'reports#revenue'
-         get '/:id/favorite_customer', to: 'reports#favorite_customer'
+        get '/:id/favorite_customer', to: 'reports#favorite_customer'
+        get '/most_items', to: 'reports#most_items'
+
       end
 
       namespace :transactions do 

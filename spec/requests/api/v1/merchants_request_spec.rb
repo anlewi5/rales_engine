@@ -181,6 +181,33 @@ describe "merchants API" do
       favorite_customer = JSON.parse(response.body)
       expect(response).to be_successful
       expect(favorite_customer["id"]).to eq(customer1.id)
+    end
+    it "returns the top x merchants ranked by total number of items sold" do 
+      merchant1 = create(:merchant)
+      invoice1 = create(:invoice, merchant: merchant1)
+      transaction1 = create(:transaction, result: "success", invoice: invoice1)
+      create(:invoice_item, invoice: invoice1, unit_price: 111, quantity: 2, created_at: "2012-03-27 14:54:11")
+      create(:invoice_item, invoice: invoice1, unit_price: 111, quantity: 1, created_at: "2012-03-27 14:54:11")
+
+      merchant2 = create(:merchant)
+      invoice2 = create(:invoice, merchant: merchant2)
+      transaction2 = create(:transaction, result: "success", invoice: invoice2)
+      create(:invoice_item, invoice: invoice2, unit_price: 111, quantity: 2, created_at: "2012-03-27 14:54:11")
+
+      merchant3 = create(:merchant)
+      create(:invoice_item, unit_price: 111, quantity: 1, created_at: "2012-03-27 14:54:11")
+
+      get "/api/v1/merchants/most_items?quantity=2"
+
+      merchant_response = JSON.parse(response.body)
+      first_merchant = merchant_response.first
+      second_merchant = merchant_response.second
+    
+      expect(response).to be_successful
+      expect(merchant_response.class).to eq(Array)
+      expect(merchant_response.count).to eq(2)
+      expect(first_merchant["id"]).to eq(merchant1.id)
+      expect(second_merchant["id"]).to eq(merchant2.id)
 
     end
   end 
