@@ -6,7 +6,7 @@ describe "invoice relationships" do
     create(:item, merchant_id: 1)
     create(:item, merchant_id: 1)
 
-    get '/api/v1/merchants/1/item'
+    get '/api/v1/merchants/1/items'
 
     items = JSON.parse(response.body)
     item = items.first
@@ -27,7 +27,7 @@ describe "invoice relationships" do
     create(:invoice, merchant_id: 1)
     create(:invoice, merchant_id: 1)
 
-    get '/api/v1/merchants/1/invoice'
+    get '/api/v1/merchants/1/invoices'
 
     invoices = JSON.parse(response.body)
     invoice = invoices.first

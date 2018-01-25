@@ -6,7 +6,7 @@ describe "customer relationships" do
     create(:invoice, customer_id: 1)
     create(:invoice, customer_id: 1)
 
-    get '/api/v1/customers/1/invoice'
+    get '/api/v1/customers/1/invoices'
 
     invoices = JSON.parse(response.body)
     invoice = invoices.first
@@ -18,14 +18,14 @@ describe "customer relationships" do
     expect(invoice).to have_key "merchant_id"
     expect(invoice).to have_key "customer_id"
   end
-  
+
   it "returns associated transactions" do
     create(:customer, id: 1)
     create(:invoice, id: 1)
     create(:transaction, invoice_id: 1)
     create(:transaction, invoice_id: 1)
 
-    get '/api/v1/customers/1/transaction'
+    get '/api/v1/customers/1/transactions'
 
     transactions = JSON.parse(response.body)
     transaction = transactions.first
