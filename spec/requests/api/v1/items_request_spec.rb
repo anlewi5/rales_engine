@@ -209,13 +209,30 @@ describe "items API" do
       expect(response).to be_successful
       expect(invoice["created_at"]).to eq(invoice1.created_at)
     end
-    it "returns the top x item instances ranked by total number sold" do 
-     
-     get "/api/v1/items/most_items?quantity=2"
 
-     expect(response).to be_successful
-     
+    it "returns the top x item instances ranked by total number sold" do 
+      item1 = create(:item)
+      item2 = create(:item)
+      item3 = create(:item)
+
+      invoice = create(:invoice)
+        
+      transaction = create(:transaction, invoice: invoice, result: "success") 
+
+      invoice_item = create(:invoice_item, item: item1, invoice: invoice, quantity: 1)
+      invoice_item2 = create(:invoice_item, item: item1, invoice: invoice, quantity: 1)
+      invoice_item3 = create(:invoice_item, item: item2, invoice: invoice, quantity: 2)
+      invoice_item4 = create(:invoice_item, item: item3, invoice: invoice, quantity: 1)
+      
+      get "/api/v1/items/most_items?quantity=2"
     
+      top_items_response = JSON.parse(response.body)
+
+      expect(response).to be_successful
+      expect(top_items_response).to be_an(Array)
+      expect(top_items_response.count).to eq(2)
+      expect(top_items_response.first["id"]).to eq(item1.id)
+      expect(top_items_response.second["id"]).to eq(item2.id) 
     end
   end
 end
