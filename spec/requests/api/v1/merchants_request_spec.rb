@@ -228,9 +228,24 @@ describe "merchants API" do
 
       # GET /api/v1/customers/:id/favorite_merchant
 
-      customer = create(:customer, id: 1)
+      customer1 = create(:customer, id: 1)
+
+      merchant1 = create(:merchant)
+      invoice1 = create(:invoice, merchant: merchant1, customer: customer1)
+      transaction1 = create(:transaction, result: "success", invoice: invoice1)
+      transaction2 = create(:transaction, result: "success", invoice: invoice1)
+
+
+      merchant2 = create(:merchant)
 
       get  "/api/v1/customers/1/favorite_merchant"
+
+      merchant = JSON.parse(response.body)
+
+      expect(response).to be_successful
+      expect(merchant["id"]).to eq(merchant1.id) 
+      
+
 
     end
   end 
