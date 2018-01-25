@@ -30,37 +30,39 @@ class Merchant < ApplicationRecord
     end
   end
 
-
-  def self.businessintelligence(params)
+  def self.revenue(params)
     if params["date"]
       revenue_by_date(params)
     else
-      revenue(params)
+      total_revenue(params)
     end
   end
 
-  def self.revenue(params)
-    revenue = Merchant.joins(invoices: [:transactions, :invoice_items]).
-      merge(Transaction.successful).
-      where(id: params[:id]).
-      group("merchants.id").
-      sum("invoice_items.unit_price * invoice_items.quantity").
-      values.
-      first
-    
-    { revenue: revenue / 100.0 }
+  private
+
+  def self.total_revenue(params)
+    revenue = revenue_for_merchant(params[:id]).first.revenue
+    revenue_to_json(revenue)
   end
 
   def self.revenue_by_date(params)
-    revenue = Merchant.select("merchants.*, sum(invoice_items.quantity * invoice_items.unit_price) AS revenue")
-    .joins(invoices: [:transactions, :invoice_items])
-    .where(id: params[:id])
-    .merge(Transaction.successful)
-    .where(invoice_items: { created_at: params["date"] } )
-    .group(:id)
-    .first
-    .revenue
+    revenue = revenue_for_merchant(params[:id])
+      .where(invoice_items: { created_at: params["date"] } )
+      .first
+      .revenue
 
+    revenue_to_json(revenue)
+  end
+
+  def self.revenue_for_merchant(merchant_id)
+    Merchant.select("merchants.*, sum(invoice_items.quantity * invoice_items.unit_price) AS revenue")
+    .joins(invoices: [:transactions, :invoice_items])
+    .where(id: merchant_id)
+    .merge(Transaction.successful)
+    .group(:id)
+  end
+
+  def self.revenue_to_json(revenue)
     { revenue: revenue / 100.0 }
   end
 

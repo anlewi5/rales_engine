@@ -1,5 +1,5 @@
 class Api::V1::Merchants::ReportsController < ApplicationController 
   def revenue
-    render json: Merchant.businessintelligence(params)
+    render json: Merchant.revenue(params)
   end
 end
