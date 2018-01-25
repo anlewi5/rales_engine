@@ -21,7 +21,7 @@ describe "customer relationships" do
 
   it "returns associated transactions" do
     create(:customer, id: 1)
-    create(:invoice, id: 1)
+    create(:invoice, id: 1, customer_id: 1)
     create(:transaction, invoice_id: 1)
     create(:transaction, invoice_id: 1)
 
@@ -31,8 +31,8 @@ describe "customer relationships" do
     transaction = transactions.first
 
     expect(response).to be_successful
-    expect(invoices).to be_an(Array)
-    expect(invoices.count).to eq 2
+    expect(transactions).to be_an(Array)
+    expect(transactions.count).to eq 2
     expect(transaction).to have_key "result"
     expect(transaction).to have_key "credit_card_number"
     expect(transaction).to have_key "invoice_id"
