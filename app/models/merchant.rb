@@ -69,7 +69,8 @@ class Merchant < ApplicationRecord
     .merge(Transaction.successful)
     .group(:id)
     .order("revenue DESC")
-    .sum(:revenue)
+    .map { |merchant| merchant.revenue }
+    .sum
   end
 
   def self.pending_customers(merchant_id)
