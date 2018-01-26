@@ -222,7 +222,7 @@ describe "items API" do
       create(:transaction, invoice: invoice, result: "success") 
 
       create(:invoice_item, item: item1, invoice: invoice, quantity: 1)
-      create(:invoice_item, item: item1, invoice: invoice, quantity: 1)
+      create(:invoice_item, item: item1, invoice: invoice, quantity: 3)
       create(:invoice_item, item: item2, invoice: invoice, quantity: 2)
       create(:invoice_item, item: item3, invoice: invoice, quantity: 1)
       
