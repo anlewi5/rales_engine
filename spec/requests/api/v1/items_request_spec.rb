@@ -238,15 +238,15 @@ describe "items API" do
     end
 
     it "returns the top x items ranked by total revenue generated" do 
-      item1 = create(:item)
-      item2 = create(:item)
-      item3 = create(:item)
+      item1 = create(:item, id: 1)
+      item2 = create(:item, id: 2)
+      item3 = create(:item, id: 3)
 
       invoice1 = create(:invoice)
       
       create(:transaction, invoice: invoice1, result: "success") 
 
-      create(:invoice_item, item: item1, invoice: invoice1, quantity: 3, unit_price: 3)
+      create(:invoice_item, item: item1, invoice: invoice1, quantity: 3, unit_price: 4)
       create(:invoice_item, item: item1, invoice: invoice1, quantity: 1, unit_price: 1)
       create(:invoice_item, item: item2, invoice: invoice1, quantity: 2, unit_price: 2)
       create(:invoice_item, item: item3, invoice: invoice1, quantity: 1, unit_price: 1)
@@ -254,11 +254,11 @@ describe "items API" do
       get "/api/v1/items/most_revenue?quantity=2"
 
       top_items_response = JSON.parse(response.body)
-      
+
       expect(response).to be_successful
       expect(top_items_response.count).to eq(2)
-      expect(top_items_response.first["id"]).to eq(item1.id)
-      expect(top_items_response.second["id"]).to eq(item2.id)
+      expect(top_items_response.first["id"]).to eq(1)
+      expect(top_items_response.second["id"]).to eq(2)
     end
   end
 end
