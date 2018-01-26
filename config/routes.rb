@@ -25,7 +25,9 @@ Rails.application.routes.draw do
         get '/find',   to: 'search#show'
         get '/random', to: 'search#show'
         get '/find_all', to: 'search#index'
-        get '/:id/favorite_merchant', to: 'reports#favorite_merchant'
+        # get '/:id/favorite_merchant', to: 'reports#favorite_merchant'
+        get '/:id/favorite_merchant', to: 'favorite_merchant#index'
+
       end
 
       namespace :items do
