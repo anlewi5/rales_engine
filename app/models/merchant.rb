@@ -102,6 +102,6 @@ class Merchant < ApplicationRecord
   end
 
   def self.revenue_to_json(revenue)
-    { revenue: revenue / 100.0 }
+    { revenue: (revenue / 100.0).to_s }
   end
 end
