@@ -88,8 +88,8 @@ class Merchant < ApplicationRecord
       ON invoices.merchant_id = merchants.id 
 
      WHERE transactions.result = 'failed' 
-      AND merchants.id = #{merchant_id} 
-     
+      AND merchants.id = #{merchant_id}
+
      EXCEPT SELECT DISTINCT customers.*, transactions.result, merchant.* 
       FROM customers 
 
