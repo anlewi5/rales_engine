@@ -33,7 +33,7 @@ In order to run tests, perform the following:
 `rspec`
 
 ## Schema
-![schema](nico, put a schema link in here please)
+![schema](https://image.ibb.co/dUhr9G/Screen_Shot_2018_01_24_at_16_36_00.png)
 
 
 ## Contributers
