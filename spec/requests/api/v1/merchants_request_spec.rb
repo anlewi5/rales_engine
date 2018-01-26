@@ -249,13 +249,16 @@ describe "merchants API" do
       
       get "/api/v1/merchants/most_revenue?quantity=2"
       
-
       top_merchants = JSON.parse(response.body)
 
       expect(response).to be_successful
       expect(top_merchants.count).to eq(2)
       expect(top_merchants.first["id"]).to eq(merchant1.id)
-    
+    end
+    it "returns the total revenue for date x across all merchants" do 
+      
+      get "/api/v1/merchants/revenue?date="
+      GET /api/v1/merchants/revenue?date=x
     end
   end 
 end
