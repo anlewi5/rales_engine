@@ -196,13 +196,13 @@ describe "items API" do
     it "returns the date with the most sales for the given item using the invoice date" do 
       item = create(:item, id: 2)
       invoice1 = create(:invoice)
-      invoice_item1 = create(:invoice_item, quantity: 2, invoice: invoice1, item: item)
-      transaction1 = create(:transaction, result: "success", invoice: invoice1)
+      create(:invoice_item, quantity: 2, invoice: invoice1, item: item)
+      create(:transaction, result: "success", invoice: invoice1)
 
 
       invoice2 = create(:invoice)
-      invoice_item2 = create(:invoice_item, quantity: 1, invoice: invoice2, item: item)
-      transaction2 = create(:transaction, result: "success", invoice: invoice2)
+      create(:invoice_item, quantity: 1, invoice: invoice2, item: item)
+      create(:transaction, result: "success", invoice: invoice2)
 
       get "/api/v1/items/#{item.id}/best_day"
 
