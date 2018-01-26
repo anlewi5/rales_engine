@@ -63,18 +63,46 @@ class Merchant < ApplicationRecord
   end
 
   def self.all_merchant_revenue(params)
-    revenue_table = Merchant.where(created_at: "2012-03-27 14:54:00" )
+    Merchant.where(created_at: "2012-03-27 14:54:00" )
     .select("merchants.*, sum(invoice_items.quantity * invoice_items.unit_price) AS revenue")
     .joins(invoices: [:transactions, :invoice_items])
     .merge(Transaction.successful)
     .group(:id)
     .order("revenue DESC")
-    .first
-    .revenue
-
-    revenue_table.sum("revenue")
+    .sum(:revenue)
   end
 
+  def self.pending_customers(merchant_id)
+    find_by_sql(pending_customers_sql(merchant_id))
+  end
+
+  def self.pending_customers_sql(merchant_id)
+    "SELECT DISTINCT customers.*, transactions.result, merchant.* 
+      FROM customers
+
+     INNER JOIN invoices 
+      ON invoices.customer_id = customers.id 
+     INNER JOIN transactions 
+      ON transactions.invoice_id = invoices.id 
+     INNER JOIN merchants 
+      ON invoices.merchant_id = merchants.id 
+
+     WHERE transactions.result = 'failed' 
+      AND merchants.id = #{merchant_id} 
+     
+     EXCEPT SELECT DISTINCT customers.*, transactions.result, merchant.* 
+      FROM customers 
+
+     INNER JOIN invoices 
+      ON invoices.customer_id = customers.id 
+     INNER JOIN transactions 
+      ON transactions.invoice_id = invoices.id 
+     INNER JOIN merchants 
+      ON invoices.merchant_id = merchants.id
+
+     WHERE transactions.result = 'success' 
+      AND merchants.id = #{merchant_id}"
+  end
   
 
   private

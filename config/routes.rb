@@ -13,6 +13,7 @@ Rails.application.routes.draw do
         get '/most_items', to: 'most_items#index'
         get '/most_revenue', to: 'most_revenue#index'
         get '/revenue', to: "revenue_date#show"
+        get '/:id/customers_with_pending_invoices', to: 'pending#index'
       end
 
       namespace :transactions do 
