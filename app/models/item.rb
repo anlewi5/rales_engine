@@ -45,8 +45,8 @@ class Item < ApplicationRecord
     end
   end
 
-  def self.best_day(item_id)
-      find(item_id)
+  def self.best_day(params)
+      find(params[:id])
       .invoices
       .select("invoices.*, sum(invoice_items.quantity) AS total_quantity")
       .joins(invoice_items: [invoice: :transactions])
