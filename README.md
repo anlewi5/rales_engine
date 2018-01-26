@@ -1,3 +1,16 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [Rails Engine](#rails-engine)
+  - [About](#about)
+  - [Getting Started](#getting-started)
+  - [Testing](#testing)
+  - [Schema](#schema)
+  - [Contributers](#contributers)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Rails Engine
 
 [![CircleCI](https://circleci.com/gh/anlewi5/rales_engine/tree/master.svg?style=shield)](https://circleci.com/gh/anlewi5/rales_engine/tree/master)
