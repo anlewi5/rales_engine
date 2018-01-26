@@ -193,7 +193,7 @@ describe "items API" do
   end 
 
   describe "business intelligence" do 
-    xit "returns the date with the most sales for the given item using the invoice date" do 
+    it "returns the date with the most sales for the given item using the invoice date" do 
       item = create(:item, id: 2)
       invoice1 = create(:invoice)
       invoice_item1 = create(:invoice_item, quantity: 2, invoice: invoice1, item: item)
@@ -207,8 +207,9 @@ describe "items API" do
       get "/api/v1/items/#{item.id}/best_day"
 
       item_response = JSON.parse(response.body)
+
       expect(response).to be_successful
-      expect(invoice["created_at"]).to eq(invoice1.created_at)
+      expect(item_response.first["created_at"]).to eq(invoice1.created_at.to_json.to_s.delete! '\"\\')
     end
 
     it "returns the top x item instances ranked by total number sold" do 
@@ -218,12 +219,12 @@ describe "items API" do
 
       invoice = create(:invoice)
         
-      transaction = create(:transaction, invoice: invoice, result: "success") 
+      create(:transaction, invoice: invoice, result: "success") 
 
-      invoice_item = create(:invoice_item, item: item1, invoice: invoice, quantity: 1)
-      invoice_item2 = create(:invoice_item, item: item1, invoice: invoice, quantity: 1)
-      invoice_item3 = create(:invoice_item, item: item2, invoice: invoice, quantity: 2)
-      invoice_item4 = create(:invoice_item, item: item3, invoice: invoice, quantity: 1)
+      create(:invoice_item, item: item1, invoice: invoice, quantity: 1)
+      create(:invoice_item, item: item1, invoice: invoice, quantity: 1)
+      create(:invoice_item, item: item2, invoice: invoice, quantity: 2)
+      create(:invoice_item, item: item3, invoice: invoice, quantity: 1)
       
       get "/api/v1/items/most_items?quantity=2"
     
@@ -243,12 +244,12 @@ describe "items API" do
 
       invoice1 = create(:invoice)
       
-      transaction = create(:transaction, invoice: invoice1, result: "success") 
+      create(:transaction, invoice: invoice1, result: "success") 
 
-      invoice_item1 = create(:invoice_item, item: item1, invoice: invoice1, quantity: 3, unit_price: 3)
-      invoice_item2 = create(:invoice_item, item: item1, invoice: invoice1, quantity: 1, unit_price: 1)
-      invoice_item3 = create(:invoice_item, item: item2, invoice: invoice1, quantity: 2, unit_price: 2)
-      invoice_item4 = create(:invoice_item, item: item3, invoice: invoice1, quantity: 1, unit_price: 1)
+      create(:invoice_item, item: item1, invoice: invoice1, quantity: 3, unit_price: 3)
+      create(:invoice_item, item: item1, invoice: invoice1, quantity: 1, unit_price: 1)
+      create(:invoice_item, item: item2, invoice: invoice1, quantity: 2, unit_price: 2)
+      create(:invoice_item, item: item3, invoice: invoice1, quantity: 1, unit_price: 1)
 
       get "/api/v1/items/most_revenue?quantity=2"
 
