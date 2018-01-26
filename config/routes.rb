@@ -8,9 +8,9 @@ Rails.application.routes.draw do
         get '/find_all', to: 'search#index'
         get '/random', to: 'search#show'
         get '/find',   to: 'search#show'
-        get '/:id/revenue', to: 'reports#revenue'
-        get '/:id/favorite_customer', to: 'reports#favorite_customer'
-        get '/most_items', to: 'reports#most_items'
+        get '/:id/revenue', to: 'revenue#index'
+        get '/:id/favorite_customer', to: 'favorite_customer#index'
+        get '/most_items', to: 'most_items#index'
         get '/most_revenue', to: 'most_revenue#index'
         get '/revenue', to: "revenue_date#show"
       end
@@ -25,7 +25,6 @@ Rails.application.routes.draw do
         get '/find',   to: 'search#show'
         get '/random', to: 'search#show'
         get '/find_all', to: 'search#index'
-        # get '/:id/favorite_merchant', to: 'reports#favorite_merchant'
         get '/:id/favorite_merchant', to: 'favorite_merchant#index'
 
       end
