@@ -49,6 +49,63 @@ class Merchant < ApplicationRecord
       .first
   end
 
+  def self.most_items(params)
+    select("merchants.*, sum(invoice_items.quantity) AS total_quantity")
+    .joins(invoices: [:invoice_items, :transactions])
+    .merge(Transaction.successful)
+    .group(:id)
+    .order("total_quantity DESC")
+    .limit(params[:quantity])
+  end
+  
+  def self.most_revenue(params)
+    Merchant.select("merchants.*, sum(invoice_items.quantity * invoice_items.unit_price) AS total_revenue").joins(invoices: [:invoice_items, :transactions]).merge(Transaction.successful).group(:id).order("total_revenue DESC").limit(params[:quantity])
+  end
+
+  def self.all_merchant_revenue(params)
+    Merchant.where(created_at: "2012-03-27 14:54:00" )
+    .select("merchants.*, sum(invoice_items.quantity * invoice_items.unit_price) AS revenue")
+    .joins(invoices: [:transactions, :invoice_items])
+    .merge(Transaction.successful)
+    .group(:id)
+    .order("revenue DESC")
+    .map { |merchant| merchant.revenue }
+    .sum
+  end
+
+  def self.pending_customers(merchant_id)
+    find_by_sql(pending_customers_sql(merchant_id))
+  end
+
+  def self.pending_customers_sql(merchant_id)
+    "SELECT DISTINCT customers.*, transactions.result, merchant.* 
+      FROM customers
+
+     INNER JOIN invoices 
+      ON invoices.customer_id = customers.id 
+     INNER JOIN transactions 
+      ON transactions.invoice_id = invoices.id 
+     INNER JOIN merchants 
+      ON invoices.merchant_id = merchants.id 
+
+     WHERE transactions.result = 'failed' 
+      AND merchants.id = #{merchant_id}
+
+     EXCEPT SELECT DISTINCT customers.*, transactions.result, merchant.* 
+      FROM customers 
+
+     INNER JOIN invoices 
+      ON invoices.customer_id = customers.id 
+     INNER JOIN transactions 
+      ON transactions.invoice_id = invoices.id 
+     INNER JOIN merchants 
+      ON invoices.merchant_id = merchants.id
+
+     WHERE transactions.result = 'success' 
+      AND merchants.id = #{merchant_id}"
+  end
+  
+
   private
 
   def self.total_revenue(params)
@@ -74,9 +131,6 @@ class Merchant < ApplicationRecord
   end
 
   def self.revenue_to_json(revenue)
-    { revenue: revenue / 100.0 }
+    { revenue: (revenue / 100.0).to_s }
   end
-
-#  SELECT "merchants".* FROM "merchants" INNER JOIN "invoices" ON "invoices"."merchant_id" = "merchants"."id" INNER JOIN "customers" ON "customers"."id" = "invoices"."customer_id" INNER JOIN "invoices" "invoices_merchants" ON "invoices_merchants"."merchant_id" = "merchants"."id" INNER JOIN "transactions" ON "transactions"."invoice_id" = "invoices_merchants"."id" WHERE "merchants"."id" = 1
-
 end

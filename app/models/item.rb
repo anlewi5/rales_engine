@@ -44,6 +44,37 @@ class Item < ApplicationRecord
         where(updated_at: params["updated_at"].to_datetime)
     end
   end
+
+  def self.best_day(params)
+      find(params[:id])
+      .invoices
+      .select("invoices.*, sum(invoice_items.quantity) AS total_quantity")
+      .joins(invoice_items: [invoice: :transactions])
+      .merge(Transaction.unscoped.successful)
+      .order("total_quantity DESC")
+      .group(:id)
+  end
+
+ 
+  def self.most_items(params)
+      unscoped
+      .select("items.*, sum(invoice_items.quantity) AS total_quantity")
+      .joins(invoices: :transactions)
+      .merge(Transaction.successful)
+      .group(:id)
+      .order("total_quantity DESC")
+      .limit(params[:quantity])
+  end
+
+  def self.most_revenue(params)
+      unscoped
+      .select("items.*, sum(invoice_items.quantity * invoice_items.unit_price) AS total_revenue")
+      .joins(invoices: :transactions)
+      .group(:id).order("total_revenue DESC")
+      .merge(Transaction.successful)
+      .limit(params[:quantity])
+  end
+
 end
 
 
