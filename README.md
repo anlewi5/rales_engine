@@ -1,6 +1,6 @@
 # Rails Engine
 
-[![CircleCI](https://circleci.com/gh/anlewis/rails_engine.svg?style=sheild)](https://circleci.com/gh/anlewis/rails_engine)
+[![CircleCI](https://circleci.com/gh/anlewis/rails_engine.svg?style=svg)](https://circleci.com/gh/anlewis/rails_engine)
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
